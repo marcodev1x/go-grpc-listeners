@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package pb;
+option go_package = "internal/pb";
+
+message blank {}
+
+// Base do tipo
+message Category {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+}
+
+// Request pro conteudo
+message CreateCategoryRequest {
+    string name = 1;
+    string description = 2;
+}
+
+message FindCategoryUniqueRequest {
+    string id = 1; // Uuid
+}
+
+// Resposta ao criar category
+message CategoryResponse {
+    Category category = 1;
+}
+
+message CategoryList {
+    repeated Category categories = 1;
+}
+
+service CategoryService {
+    rpc CreateCategory(CreateCategoryRequest) returns (CategoryResponse) {}
+    rpc CreateCategoryStream(stream CreateCategoryRequest) returns (CategoryList) {}
+    rpc FindCategories(blank) returns (CategoryList) {}
+    rpc FindCategoryUnique(FindCategoryUniqueRequest) returns (CategoryResponse) {}
+}
